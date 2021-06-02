@@ -9,15 +9,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
 
 class MyAdapter(val data : List<UserData>, val context : Context): RecyclerView.Adapter<MyAdapter.ViewHolder>(){
     class ViewHolder(view :View):RecyclerView.ViewHolder(view){
         val id : TextView
         val login : TextView
+        val imageView : ImageView
         init {
             id = view.findViewById(R.id.id)
             login = view.findViewById(R.id.login)
+            imageView = view.findViewById(R.id.imageView)
         }
     }
 
@@ -29,6 +32,7 @@ class MyAdapter(val data : List<UserData>, val context : Context): RecyclerView.
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.id.text = data[position].id.toString()
         holder.login.text = data[position].login
+        Glide.with(holder.imageView.context).load(data[position].avatarUrl).into(holder.imageView);
         holder.itemView.setOnClickListener {
             Toast.makeText(
                 context,
@@ -38,6 +42,7 @@ class MyAdapter(val data : List<UserData>, val context : Context): RecyclerView.
             val context=holder.login.context
             val intent = Intent( context, Second::class.java)
             intent.putExtra("message",holder.login.text)
+            intent.putExtra("image",data[position].avatarUrl)
             context.startActivity(intent)
         }
 
