@@ -12,33 +12,26 @@ import retrofit2.Response
 
 
 class MainActivity : AppCompatActivity() {
-    private var useDataList:List<UserData> = arrayListOf()
-    private lateinit var adapter: MyAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val recyclerView: RecyclerView = findViewById(R.id.rvUsers)
-//        recyclerView.itemAnimator = DefaultItemAnimator()
-        adapter = MyAdapter()
+        val re : List<UserData> = arrayListOf(
+            UserData("kjs","2342"),
+            UserData("kjs","2342"),
+            UserData("kjs","2342"),
+            UserData("kjs","2342"),
+            UserData("kjs","2342"),
+            UserData("kjs","2342"),
+            UserData("kjs","2342"),
+            UserData("kjs","2342"),
+            UserData("kjs","2342"),
+            UserData("kjs","2342"),
+            UserData("kjs","2342")
+        )
+        println(re.toString())
         recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
-        recyclerView.adapter = adapter
-        getData(recyclerView)
-//        val re : List<UserData> = arrayListOf(
-//            UserData("kjs","2342"),
-//            UserData("kjs","2342"),
-//            UserData("kjs","2342"),
-//            UserData("kjs","2342"),
-//            UserData("kjs","2342"),
-//            UserData("kjs","2342"),
-//            UserData("kjs","2342"),
-//            UserData("kjs","2342"),
-//            UserData("kjs","2342"),
-//            UserData("kjs","2342"),
-//            UserData("kjs","2342")
-//        )
-//        println(re.toString())
-//        recyclerView.adapter = MyAdapter(re)
-//        recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
+        recyclerView.adapter = MyAdapter(re)
     }
 
     private fun getData(recyclerView: RecyclerView) {
@@ -49,8 +42,6 @@ class MainActivity : AppCompatActivity() {
                 response: Response<List<UserData>>
             ) {
                 val userDataList : List<UserData> = response.body()!!
-                    print("after data")
-                adapter.setData(userDataList)
 
             }
 

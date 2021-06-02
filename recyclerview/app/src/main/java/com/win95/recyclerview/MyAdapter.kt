@@ -1,31 +1,25 @@
 package com.win95.recyclerview
 
-import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import java.util.*
 
 
-class MyAdapter(): RecyclerView.Adapter<ViewHolder>() {
-     val list : MutableList<UserData>
-//    val context : Activity
-
+class MyAdapter(list : List<UserData>): RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+    private val data : List<UserData>
     init{
-        list = mutableListOf<UserData>()
-//        this.context = context
-    }
-    fun  setData(data : List<UserData>):Unit{
-        list.clear()
-        for(i in data){
-            list.add(i)
-            println("in adapter ${i.avatarUrl}")
+        var idx = 1
+        for(i in list){
+            println("$idx in adapter ${i.login}")
+            idx+=1
         }
-        this.notifyItemRangeInserted(0, list.size - 1);
+        data = list
+        println(data.toString())
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view : View = inflater.inflate(R.layout.user,parent,false)
@@ -33,24 +27,22 @@ class MyAdapter(): RecyclerView.Adapter<ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.tvEmail.text = (list[position].login)
-        holder.tvName.text = (list[position].type)
-//        val url = URL(list[position].avatarUrl)
+        holder.tvEmail.text = (data[position].login)
+        holder.tvName.text = (data[position].type)
     }
 
     override fun getItemCount(): Int {
-        return list.size
+        return data.size
     }
 
-
-}
-class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
-    var tvName: TextView
-    var tvEmail: TextView
-    var ivUserImage : ImageView
-    init{
-        tvName = itemView.findViewById(R.id.name)
-        tvEmail = itemView.findViewById(R.id.email)
-        ivUserImage = itemView.findViewById(R.id.image)
+    class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
+        var tvName: TextView
+        var tvEmail: TextView
+        var ivUserImage : ImageView
+        init{
+            tvName = itemView.findViewById(R.id.name)
+            tvEmail = itemView.findViewById(R.id.email)
+            ivUserImage = itemView.findViewById(R.id.image)
+        }
     }
 }
