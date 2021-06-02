@@ -17,38 +17,36 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val recyclerView: RecyclerView = findViewById(R.id.rvUsers)
         recyclerView.layoutManager = LinearLayoutManager(applicationContext)
-//        getData(recyclerView)
-        val data = FakeData().data
-        recyclerView.adapter = MyAdapter(data,this@MainActivity)
+        getData(recyclerView)
+//        val data = FakeData().data
+//        recyclerView.adapter = MyAdapter(data,this@MainActivity)
     }
 
     private fun getData( recyclerView : RecyclerView) {
-        val data = FakeData().data
-        recyclerView.adapter = MyAdapter(data,this@MainActivity)
-//        val users: Call<List<UserData>> = fetchUser.apiCall.getUsers()
-//        users.enqueue(object : Callback<List<UserData>> {
-//            override fun onResponse(
-//                call: Call<List<UserData>>,
-//                response: Response<List<UserData>>
-//            ) {
-//                val userDataList : List<UserData> = response.body()!!
-//                print("after data")
-//                recyclerView.adapter = MyAdapter(userDataList,this@MainActivity)
-//            }
-//
-//            override fun onFailure(call: Call<List<UserData>>, t: Throwable) {
-//                println("-------------------------------------" +
-//                        "----------------failure-----------------" +
-//                        "-------------------------------------")
-//                println("-------------------------------------" +
-//                        "----------------failure-----------------" +
-//                        "-------------------------------------")
-//                println("-------------------------------------" +
-//                        "----------------failure-----------------" +
-//                        "-------------------------------------")
-//            }
-//
-//        })
+        val users: Call<List<UserData>> = fetchUser.apiCall.getUsers()
+        users.enqueue(object : Callback<List<UserData>> {
+            override fun onResponse(
+                call: Call<List<UserData>>,
+                response: Response<List<UserData>>
+            ) {
+                val userDataList : List<UserData> = response.body()!!
+                print("after data")
+                recyclerView.adapter = MyAdapter(userDataList,this@MainActivity)
+            }
+
+            override fun onFailure(call: Call<List<UserData>>, t: Throwable) {
+                println("-------------------------------------" +
+                        "----------------failure-----------------" +
+                        "-------------------------------------")
+                println("-------------------------------------" +
+                        "----------------failure-----------------" +
+                        "-------------------------------------")
+                println("-------------------------------------" +
+                        "----------------failure-----------------" +
+                        "-------------------------------------")
+            }
+
+        })
 
     }
 }
