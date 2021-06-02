@@ -12,41 +12,43 @@ import retrofit2.Response
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var adapter: MyAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val recyclerView: RecyclerView = findViewById(R.id.rvUsers)
-        adapter = MyAdapter()
-        recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
-        recyclerView.adapter = adapter
-        getData()
+        recyclerView.layoutManager = LinearLayoutManager(applicationContext)
+//        getData(recyclerView)
+        val data = FakeData().data
+        recyclerView.adapter = MyAdapter(data,this@MainActivity)
     }
 
-    private fun getData() {
-        val users: Call<List<UserData>> = fetchUser.apiCall.getUsers()
-        users.enqueue(object : Callback<List<UserData>> {
-            override fun onResponse(
-                call: Call<List<UserData>>,
-                response: Response<List<UserData>>
-            ) {
-                val userDataList : List<UserData> = response.body()!!
-                print("after data")
-                adapter.setData(userDataList)
-            }
+    private fun getData( recyclerView : RecyclerView) {
+        val data = FakeData().data
+        recyclerView.adapter = MyAdapter(data,this@MainActivity)
+//        val users: Call<List<UserData>> = fetchUser.apiCall.getUsers()
+//        users.enqueue(object : Callback<List<UserData>> {
+//            override fun onResponse(
+//                call: Call<List<UserData>>,
+//                response: Response<List<UserData>>
+//            ) {
+//                val userDataList : List<UserData> = response.body()!!
+//                print("after data")
+//                recyclerView.adapter = MyAdapter(userDataList,this@MainActivity)
+//            }
+//
+//            override fun onFailure(call: Call<List<UserData>>, t: Throwable) {
+//                println("-------------------------------------" +
+//                        "----------------failure-----------------" +
+//                        "-------------------------------------")
+//                println("-------------------------------------" +
+//                        "----------------failure-----------------" +
+//                        "-------------------------------------")
+//                println("-------------------------------------" +
+//                        "----------------failure-----------------" +
+//                        "-------------------------------------")
+//            }
+//
+//        })
 
-            override fun onFailure(call: Call<List<UserData>>, t: Throwable) {
-                println("-------------------------------------" +
-                        "----------------failure-----------------" +
-                        "-------------------------------------")
-                println("-------------------------------------" +
-                        "----------------failure-----------------" +
-                        "-------------------------------------")
-                println("-------------------------------------" +
-                        "----------------failure-----------------" +
-                        "-------------------------------------")
-            }
-
-        })
     }
 }
