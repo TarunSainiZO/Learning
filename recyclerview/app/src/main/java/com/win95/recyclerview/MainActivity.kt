@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val recyclerView: RecyclerView = findViewById(R.id.rvUsers)
         recyclerView.layoutManager = LinearLayoutManager(applicationContext)
+        recyclerView.itemAnimator = DefaultItemAnimator()
         getData(recyclerView)
 //        val data = FakeData().data
 //        recyclerView.adapter = MyAdapter(data,this@MainActivity)
