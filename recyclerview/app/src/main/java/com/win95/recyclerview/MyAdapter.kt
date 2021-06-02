@@ -1,6 +1,7 @@
 package com.win95.recyclerview
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +35,12 @@ class MyAdapter(val data : List<UserData>, val context : Context): RecyclerView.
                 holder.login.text,
                 Toast.LENGTH_SHORT
             ).show()
+            val context=holder.login.context
+            val intent = Intent( context, Second::class.java)
+            intent.putExtra("message",holder.login.text)
+            context.startActivity(intent)
         }
+
     }
 
     override fun getItemCount(): Int {
