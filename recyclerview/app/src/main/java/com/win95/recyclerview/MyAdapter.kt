@@ -10,9 +10,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import java.nio.file.attribute.UserDefinedFileAttributeView
 
 
-class MyAdapter(val data : List<UserData>, val context : Context): RecyclerView.Adapter<MyAdapter.ViewHolder>(){
+class MyAdapter(var data : List<UserData>, val context : Context): RecyclerView.Adapter<MyAdapter.ViewHolder>(){
     class ViewHolder(view :View):RecyclerView.ViewHolder(view){
         val id : TextView
         val login : TextView
@@ -23,7 +24,13 @@ class MyAdapter(val data : List<UserData>, val context : Context): RecyclerView.
             imageView = view.findViewById(R.id.imageView)
         }
     }
-
+    fun setDataInAdapter(data : List<UserData>){
+        this.data = arrayListOf()
+        for(i in data){
+            (this.data as ArrayList<UserData>).add(i)
+        }
+        this.notifyDataSetChanged()
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.users,parent,false)
         return ViewHolder(view)

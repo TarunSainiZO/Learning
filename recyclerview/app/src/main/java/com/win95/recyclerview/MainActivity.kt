@@ -1,53 +1,73 @@
 package com.win95.recyclerview
 
+import android.opengl.Visibility
 import android.os.Bundle
+import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.Adapter
+import android.widget.Button
+import android.widget.ProgressBar
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.internal.ContextUtils.getActivity
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.win95.rec.MainViewModel
+import com.win95.users.NetworkConnection
 
 
 class MainActivity : AppCompatActivity() {
+    lateinit var mainViewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+
+
+        val progressBar : ProgressBar = findViewById(R.id.progressBar)
+        progressBar.visibility = View.VISIBLE
+
         val recyclerView: RecyclerView = findViewById(R.id.rvUsers)
         recyclerView.layoutManager = LinearLayoutManager(applicationContext)
-        recyclerView.itemAnimator = DefaultItemAnimator()
-        getData(recyclerView)
-//        val data = FakeData().data
-//        recyclerView.adapter = MyAdapter(data,this@MainActivity)
-    }
+        val empty :List<UserData> = emptyList()
+        recyclerView.adapter = MyAdapter(empty,this@MainActivity)
+        val view = LayoutInflater.from(this).inflate(R.layout.network,null,false)
 
-    private fun getData( recyclerView : RecyclerView) {
-        val users: Call<List<UserData>> = fetchUser.apiCall.getUsers()
-        users.enqueue(object : Callback<List<UserData>> {
-            override fun onResponse(
-                call: Call<List<UserData>>,
-                response: Response<List<UserData>>
-            ) {
-                val userDataList : List<UserData> = response.body()!!
-                print("after data")
-                recyclerView.adapter = MyAdapter(userDataList,this@MainActivity)
+        val builder = AlertDialog.Builder(this)
+        builder.setView(view)
+        val dialog : AlertDialog = builder.create()
+        dialog.window?.setGravity(Gravity.CENTER)
+        dialog.setCancelable(false)
+
+        val networkConnection = NetworkConnection(applicationContext)
+        networkConnection.observe(this, Observer {
+            if(!it){
+                dialog.show()
+            }else{
+                dialog.hide()
+                mainViewModel.fetchData()
             }
-
-            override fun onFailure(call: Call<List<UserData>>, t: Throwable) {
-                println("-------------------------------------" +
-                        "----------------failure-----------------" +
-                        "-------------------------------------")
-                println("-------------------------------------" +
-                        "----------------failure-----------------" +
-                        "-------------------------------------")
-                println("-------------------------------------" +
-                        "----------------failure-----------------" +
-                        "-------------------------------------")
-            }
-
         })
 
+        mainViewModel.list.observe(this,{
+            if(it.isNotEmpty()) {
+                progressBar.visibility = View.INVISIBLE
+            }
+            (recyclerView.adapter as MyAdapter).setDataInAdapter(it)
+        })
+
+        Log.d("debug","starting fetch function")
+        mainViewModel.fetchData()
+        Log.d("debug","fetch function complete")
+
+        val button = view.findViewById<Button>(R.id.retry)
+        button.setOnClickListener {
+            mainViewModel.fetchData()
+        }
     }
 }
