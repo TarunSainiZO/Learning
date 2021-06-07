@@ -1,5 +1,6 @@
 package com.win95.recyclerview
 
+import com.win95.recyclerview.viewmodel.UserData
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

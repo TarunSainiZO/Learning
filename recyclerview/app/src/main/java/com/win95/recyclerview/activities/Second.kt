@@ -1,10 +1,11 @@
-package com.win95.recyclerview
+package com.win95.recyclerview.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.win95.recyclerview.R
 
 class Second : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

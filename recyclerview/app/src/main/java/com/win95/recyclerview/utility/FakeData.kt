@@ -1,4 +1,6 @@
-package com.win95.recyclerview
+package com.win95.recyclerview.utility
+
+import com.win95.recyclerview.viewmodel.UserData
 
 class FakeData {
     val data : MutableList<UserData>

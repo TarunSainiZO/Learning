@@ -1,4 +1,4 @@
-package com.win95.recyclerview
+package com.win95.recyclerview.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -10,7 +10,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import java.nio.file.attribute.UserDefinedFileAttributeView
+import com.win95.recyclerview.R
+import com.win95.recyclerview.activities.Second
+import com.win95.recyclerview.viewmodel.UserData
 
 
 class MyAdapter(var data : List<UserData>, val context : Context): RecyclerView.Adapter<MyAdapter.ViewHolder>(){

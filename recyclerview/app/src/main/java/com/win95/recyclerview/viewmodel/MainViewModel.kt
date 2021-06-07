@@ -1,6 +1,5 @@
-package com.win95.rec
+package com.win95.recyclerview.viewmodel
 
-import com.win95.recyclerview.UserData
 import com.win95.recyclerview.fetchUser
 import android.util.Log
 import androidx.lifecycle.MutableLiveData

@@ -1,4 +1,4 @@
-package com.win95.recyclerview
+package com.win95.recyclerview.viewmodel
 
 import com.google.gson.annotations.SerializedName
 
