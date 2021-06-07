@@ -1,5 +1,7 @@
 package com.win95.recyclerview.activities
 
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -16,12 +18,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.win95.recyclerview.R
 import com.win95.recyclerview.viewmodel.UserData
 import com.win95.recyclerview.adapter.MyAdapter
+import com.win95.recyclerview.networkcheckerpg.MyBroadcastReceiver
 import com.win95.recyclerview.viewmodel.MainViewModel
 import com.win95.recyclerview.networkcheckerpg.NetworkConnection
 
 
 class MainActivity : AppCompatActivity() {
     lateinit var mainViewModel: MainViewModel
+    lateinit var myBroadcastReceiver: MyBroadcastReceiver
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -37,21 +41,10 @@ class MainActivity : AppCompatActivity() {
         val empty :List<UserData> = emptyList()
         recyclerView.adapter = MyAdapter(empty,this@MainActivity)
 
-        val view = LayoutInflater.from(this).inflate(R.layout.network,null,false)
-        val builder = AlertDialog.Builder(this)
-        builder.setView(view)
-        val dialog : AlertDialog = builder.create()
-        dialog.window?.setGravity(Gravity.CENTER)
-        dialog.setCancelable(false)
-        val networkConnection = NetworkConnection(applicationContext)
-        networkConnection.observe(this, Observer {
-            if(!it){
-                dialog.show()
-            }else{
-                dialog.hide()
-                mainViewModel.fetchData()
-            }
-        })
+
+        myBroadcastReceiver = MyBroadcastReceiver()
+
+        registerReceiver(myBroadcastReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         mainViewModel.list.observe(this,{
             if(it.isNotEmpty()) {
                 progressBar.visibility = View.INVISIBLE
@@ -61,9 +54,10 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.fetchData()
 
-        val button = view.findViewById<Button>(R.id.retry)
-        button.setOnClickListener {
-            mainViewModel.fetchData()
-        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(myBroadcastReceiver)
     }
 }

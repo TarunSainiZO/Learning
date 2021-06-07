@@ -20,14 +20,10 @@ class MainViewModel : ViewModel() {
                     response: Response<List<UserData>>
                 ) {
                     val userDataList: List<UserData> = response.body()!!
-                    print("after data")
-                    for(i in userDataList){
-                        Log.d("debug","data = ${i.avatarUrl}")
-                    }
                     list.value = userDataList
                 }
                 override fun onFailure(call: Call<List<UserData>>, t: Throwable) {
-                    print("error")
+                    Log.d("debug","failed in viewModel")
                 }
             })
         }
